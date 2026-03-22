@@ -3,20 +3,24 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AI-based Tech Inc</title>
+  <title>AI-based Tech Inc — AI Infrastructure, Commerce & Automation</title>
   <meta name="description" content="AI-based Tech Inc — AI-powered cross-border e-commerce infrastructure, automation tools, and data-driven solutions for global merchants.">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>A</text></svg>">
   <style>
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
     :root {
       --bg-deep: #050d1a;
       --bg-card: #0a1628;
+      --bg-alt: #060e1e;
       --cyan: #19e5d9;
-      --cyan-dim: rgba(25, 229, 217, 0.12);
+      --cyan-dim: rgba(25, 229, 217, 0.10);
       --blue: #3b82f6;
       --text: #e2e8f0;
       --text-dim: #94a3b8;
-      --border: rgba(15, 124, 153, 0.3);
+      --text-muted: #64748b;
+      --border: rgba(15, 124, 153, 0.25);
+      --border-hover: rgba(25, 229, 217, 0.5);
     }
 
     html { scroll-behavior: smooth; }
@@ -26,168 +30,263 @@
       background: var(--bg-deep);
       color: var(--text);
       line-height: 1.6;
-      min-height: 100vh;
     }
 
     /* --- NAV --- */
     nav {
       position: fixed; top: 0; width: 100%; z-index: 100;
-      background: rgba(5, 13, 26, 0.85);
-      backdrop-filter: blur(12px);
+      background: rgba(5, 13, 26, 0.88);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
       border-bottom: 1px solid var(--border);
-      padding: 0 2rem;
     }
     .nav-inner {
-      max-width: 1100px; margin: 0 auto;
+      max-width: 1140px; margin: 0 auto; padding: 0 2rem;
       display: flex; align-items: center; justify-content: space-between;
       height: 64px;
     }
     .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; }
-    .nav-brand svg { width: 36px; height: 36px; }
-    .nav-brand span { font-size: 1.05rem; font-weight: 600; color: var(--text); letter-spacing: 0.02em; }
-    .nav-links { display: flex; gap: 2rem; list-style: none; }
-    .nav-links a {
-      color: var(--text-dim); text-decoration: none; font-size: 0.9rem;
-      transition: color 0.2s;
-    }
+    .nav-brand svg { width: 34px; height: 34px; }
+    .nav-brand span { font-size: 1rem; font-weight: 600; color: var(--text); letter-spacing: 0.01em; }
+    .nav-links { display: flex; gap: 1.75rem; list-style: none; }
+    .nav-links a { color: var(--text-dim); text-decoration: none; font-size: 0.88rem; transition: color 0.2s; }
     .nav-links a:hover { color: var(--cyan); }
+    .nav-cta {
+      background: var(--cyan); color: #050d1a; border: none; padding: 0.45rem 1.1rem;
+      border-radius: 6px; font-size: 0.85rem; font-weight: 600; cursor: pointer;
+      text-decoration: none; transition: opacity 0.2s;
+    }
+    .nav-cta:hover { opacity: 0.85; }
+    .mobile-toggle { display: none; background: none; border: none; color: var(--text); font-size: 1.5rem; cursor: pointer; }
 
     /* --- HERO --- */
     .hero {
       min-height: 100vh;
       display: flex; flex-direction: column; align-items: center; justify-content: center;
-      text-align: center; padding: 6rem 2rem 4rem;
-      background: radial-gradient(ellipse 60% 50% at 50% 40%, rgba(25, 229, 217, 0.06) 0%, transparent 70%);
+      text-align: center; padding: 7rem 2rem 5rem;
+      background: radial-gradient(ellipse 60% 45% at 50% 35%, rgba(25, 229, 217, 0.06) 0%, transparent 70%);
+      position: relative;
     }
-    .hero svg { width: 120px; height: 120px; margin-bottom: 2rem; filter: drop-shadow(0 0 30px rgba(25, 229, 217, 0.25)); }
-    .hero h1 { font-size: clamp(2rem, 5vw, 3.2rem); font-weight: 700; margin-bottom: 0.5rem; }
+    .hero::after {
+      content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 1px;
+      background: linear-gradient(90deg, transparent, var(--border), transparent);
+    }
+    .hero svg { width: 110px; height: 110px; margin-bottom: 2rem; filter: drop-shadow(0 0 30px rgba(25, 229, 217, 0.2)); }
+    .hero h1 { font-size: clamp(2.2rem, 5vw, 3.4rem); font-weight: 700; margin-bottom: 0.5rem; letter-spacing: -0.02em; }
     .hero h1 .accent { color: var(--cyan); }
     .hero .tagline {
-      font-size: 0.95rem; color: var(--text-dim); letter-spacing: 0.25em; text-transform: uppercase;
-      margin-bottom: 2rem;
+      font-size: 0.85rem; color: var(--text-muted); letter-spacing: 0.3em; text-transform: uppercase;
+      margin-bottom: 1.5rem;
     }
-    .hero p {
-      max-width: 600px; font-size: 1.1rem; color: var(--text-dim); line-height: 1.8;
+    .hero .hero-desc {
+      max-width: 580px; font-size: 1.05rem; color: var(--text-dim); line-height: 1.8;
+      margin-bottom: 2.5rem;
     }
+    .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; }
+    .btn-primary {
+      background: var(--cyan); color: #050d1a; border: none; padding: 0.75rem 2rem;
+      border-radius: 8px; font-size: 0.95rem; font-weight: 600; cursor: pointer;
+      text-decoration: none; transition: opacity 0.2s, transform 0.2s;
+    }
+    .btn-primary:hover { opacity: 0.9; transform: translateY(-1px); }
+    .btn-outline {
+      background: transparent; color: var(--text); border: 1px solid var(--border);
+      padding: 0.75rem 2rem; border-radius: 8px; font-size: 0.95rem; font-weight: 500;
+      cursor: pointer; text-decoration: none; transition: border-color 0.2s;
+    }
+    .btn-outline:hover { border-color: var(--cyan); color: var(--cyan); }
 
-    /* --- SECTIONS --- */
+    /* --- SHARED --- */
     section { padding: 5rem 2rem; }
-    .container { max-width: 1100px; margin: 0 auto; }
+    .container { max-width: 1140px; margin: 0 auto; }
     .section-label {
-      font-size: 0.8rem; letter-spacing: 0.2em; text-transform: uppercase;
+      font-size: 0.78rem; letter-spacing: 0.2em; text-transform: uppercase;
       color: var(--cyan); margin-bottom: 0.75rem;
     }
-    .section-title {
-      font-size: clamp(1.5rem, 3vw, 2rem); font-weight: 700; margin-bottom: 1rem;
-    }
-    .section-desc {
-      color: var(--text-dim); max-width: 560px; margin-bottom: 3rem;
+    .section-title { font-size: clamp(1.5rem, 3vw, 2.1rem); font-weight: 700; margin-bottom: 0.75rem; }
+    .section-desc { color: var(--text-dim); max-width: 560px; margin-bottom: 3rem; line-height: 1.7; }
+    .section-divider {
+      height: 1px; border: none; margin: 0;
+      background: linear-gradient(90deg, transparent, var(--border), transparent);
     }
 
-    /* --- SERVICES GRID --- */
+    /* --- SERVICES --- */
     .grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 1.5rem;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.25rem;
     }
     .card {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 2rem;
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: 12px; padding: 1.75rem;
       transition: border-color 0.3s, transform 0.3s;
     }
-    .card:hover { border-color: var(--cyan); transform: translateY(-4px); }
+    .card:hover { border-color: var(--border-hover); transform: translateY(-3px); }
     .card-icon {
-      width: 48px; height: 48px; border-radius: 10px;
+      width: 44px; height: 44px; border-radius: 10px;
       background: var(--cyan-dim);
       display: flex; align-items: center; justify-content: center;
-      margin-bottom: 1.25rem; font-size: 1.4rem;
+      margin-bottom: 1.1rem;
     }
-    .card h3 { font-size: 1.1rem; font-weight: 600; margin-bottom: 0.5rem; }
-    .card p { font-size: 0.9rem; color: var(--text-dim); line-height: 1.7; }
+    .card h3 { font-size: 1.05rem; font-weight: 600; margin-bottom: 0.4rem; }
+    .card p { font-size: 0.88rem; color: var(--text-dim); line-height: 1.7; }
+
+    /* --- HOW IT WORKS --- */
+    .process-section { background: var(--bg-alt); }
+    .process-steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 2rem; counter-reset: step;
+    }
+    .step { position: relative; text-align: center; }
+    .step-number {
+      width: 52px; height: 52px; border-radius: 50%;
+      border: 2px solid var(--cyan); background: var(--bg-card);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.2rem; font-weight: 700; color: var(--cyan);
+      margin: 0 auto 1rem;
+    }
+    .step h4 { font-size: 1rem; font-weight: 600; margin-bottom: 0.4rem; }
+    .step p { font-size: 0.85rem; color: var(--text-dim); line-height: 1.7; }
 
     /* --- TIKTOK --- */
     .tiktok-section {
       background: linear-gradient(180deg, var(--bg-deep) 0%, #0a0f1e 50%, var(--bg-deep) 100%);
-      border-top: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
     }
-    .tiktok-highlight {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 3rem; align-items: center;
-    }
-    .tiktok-text h3 { font-size: 1.3rem; font-weight: 600; margin-bottom: 1rem; }
-    .tiktok-text p { color: var(--text-dim); line-height: 1.8; margin-bottom: 1rem; }
-    .tiktok-features { list-style: none; margin-top: 1.5rem; }
+    .tiktok-highlight { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: start; }
+    .tiktok-text h3 { font-size: 1.2rem; font-weight: 600; margin-bottom: 1rem; }
+    .tiktok-text p { color: var(--text-dim); line-height: 1.8; margin-bottom: 1rem; font-size: 0.95rem; }
+    .tiktok-features { list-style: none; margin-top: 1.25rem; }
     .tiktok-features li {
-      padding: 0.6rem 0; color: var(--text-dim); font-size: 0.95rem;
-      display: flex; align-items: flex-start; gap: 0.75rem;
+      padding: 0.5rem 0; color: var(--text-dim); font-size: 0.9rem;
+      display: flex; align-items: flex-start; gap: 0.7rem;
     }
     .tiktok-features li::before {
-      content: ''; display: inline-block; width: 8px; height: 8px;
+      content: ''; width: 7px; height: 7px;
       background: var(--cyan); border-radius: 50%; margin-top: 0.45rem; flex-shrink: 0;
     }
-    .tiktok-stats {
-      display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;
-    }
+    .tiktok-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; }
     .tiktok-stat-card {
       background: var(--bg-card); border: 1px solid var(--border);
-      border-radius: 12px; padding: 1.5rem; text-align: center;
+      border-radius: 12px; padding: 1.25rem; text-align: center;
     }
-    .tiktok-stat-card .stat-value { font-size: 1.8rem; font-weight: 700; color: var(--cyan); }
-    .tiktok-stat-card .stat-label { font-size: 0.8rem; color: var(--text-dim); margin-top: 0.25rem; }
-    .tiktok-categories {
-      display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1.5rem;
-    }
+    .tiktok-stat-card .stat-value { font-size: 1.6rem; font-weight: 700; color: var(--cyan); }
+    .tiktok-stat-card .stat-label { font-size: 0.78rem; color: var(--text-dim); margin-top: 0.2rem; }
+    .tiktok-categories { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1.5rem; }
     .tag {
-      background: var(--cyan-dim); border: 1px solid rgba(25, 229, 217, 0.2);
-      color: var(--cyan); padding: 0.3rem 0.8rem; border-radius: 20px;
-      font-size: 0.8rem; white-space: nowrap;
-    }
-    @media (max-width: 768px) {
-      .tiktok-highlight { grid-template-columns: 1fr; }
+      background: var(--cyan-dim); border: 1px solid rgba(25, 229, 217, 0.15);
+      color: var(--cyan); padding: 0.25rem 0.75rem; border-radius: 20px;
+      font-size: 0.78rem;
     }
 
     /* --- ABOUT --- */
     .about-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
       gap: 2rem; margin-top: 2.5rem;
     }
     .stat { text-align: center; }
-    .stat-value {
-      font-size: 2.2rem; font-weight: 700; color: var(--cyan);
-      margin-bottom: 0.25rem;
+    .stat-value { font-size: 2rem; font-weight: 700; color: var(--cyan); margin-bottom: 0.2rem; }
+    .stat-label { font-size: 0.82rem; color: var(--text-dim); }
+
+    /* --- FAQ --- */
+    .faq-section { background: var(--bg-alt); }
+    .faq-list { max-width: 760px; }
+    .faq-item {
+      border: 1px solid var(--border); border-radius: 10px;
+      margin-bottom: 0.75rem; overflow: hidden;
+      background: var(--bg-card); transition: border-color 0.3s;
     }
-    .stat-label { font-size: 0.85rem; color: var(--text-dim); }
+    .faq-item:hover { border-color: rgba(25, 229, 217, 0.3); }
+    .faq-q {
+      width: 100%; background: none; border: none; color: var(--text);
+      padding: 1.15rem 1.5rem; font-size: 0.95rem; font-weight: 500;
+      text-align: left; cursor: pointer;
+      display: flex; justify-content: space-between; align-items: center;
+      font-family: inherit;
+    }
+    .faq-q:hover { color: var(--cyan); }
+    .faq-q::after {
+      content: '+'; font-size: 1.3rem; color: var(--text-muted);
+      transition: transform 0.3s; flex-shrink: 0; margin-left: 1rem;
+    }
+    .faq-item.open .faq-q::after { content: '\2212'; color: var(--cyan); }
+    .faq-a {
+      max-height: 0; overflow: hidden; transition: max-height 0.35s ease, padding 0.35s ease;
+      padding: 0 1.5rem;
+    }
+    .faq-item.open .faq-a { max-height: 300px; padding: 0 1.5rem 1.25rem; }
+    .faq-a p { font-size: 0.9rem; color: var(--text-dim); line-height: 1.8; }
 
     /* --- CONTACT --- */
-    .contact-section {
-      background: var(--bg-card);
-      border-top: 1px solid var(--border);
+    .contact-section { background: var(--bg-card); }
+    .contact-layout {
+      display: grid; grid-template-columns: 1fr 1.2fr; gap: 3rem;
     }
-    .contact-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 2rem;
+    .contact-info { display: flex; flex-direction: column; gap: 1.5rem; }
+    .contact-item h4 {
+      font-size: 0.78rem; letter-spacing: 0.15em; text-transform: uppercase;
+      color: var(--cyan); margin-bottom: 0.4rem;
     }
-    .contact-item h4 { font-size: 0.8rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--cyan); margin-bottom: 0.5rem; }
-    .contact-item p { color: var(--text-dim); font-size: 0.95rem; }
+    .contact-item p { color: var(--text-dim); font-size: 0.92rem; }
+    .contact-form { display: flex; flex-direction: column; gap: 1rem; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .contact-form input, .contact-form textarea, .contact-form select {
+      background: var(--bg-deep); border: 1px solid var(--border);
+      border-radius: 8px; padding: 0.75rem 1rem; color: var(--text);
+      font-size: 0.9rem; font-family: inherit; transition: border-color 0.2s;
+      width: 100%;
+    }
+    .contact-form input:focus, .contact-form textarea:focus, .contact-form select:focus {
+      outline: none; border-color: var(--cyan);
+    }
+    .contact-form textarea { resize: vertical; min-height: 100px; }
+    .contact-form input::placeholder, .contact-form textarea::placeholder { color: var(--text-muted); }
+    .contact-form select { appearance: none; cursor: pointer; }
+    .contact-form select option { background: var(--bg-deep); }
+    .form-submit {
+      background: var(--cyan); color: #050d1a; border: none; padding: 0.75rem 2rem;
+      border-radius: 8px; font-size: 0.95rem; font-weight: 600; cursor: pointer;
+      transition: opacity 0.2s; align-self: flex-start;
+    }
+    .form-submit:hover { opacity: 0.85; }
 
     /* --- FOOTER --- */
-    footer {
-      text-align: center; padding: 2rem;
-      border-top: 1px solid var(--border);
-      font-size: 0.8rem; color: var(--text-dim);
+    .footer {
+      border-top: 1px solid var(--border); padding: 3rem 2rem 2rem;
+    }
+    .footer-inner {
+      max-width: 1140px; margin: 0 auto;
+      display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 2rem;
+    }
+    .footer-brand p { color: var(--text-dim); font-size: 0.85rem; margin-top: 0.75rem; line-height: 1.7; }
+    .footer-col h5 {
+      font-size: 0.78rem; letter-spacing: 0.15em; text-transform: uppercase;
+      color: var(--text); margin-bottom: 0.75rem;
+    }
+    .footer-col ul { list-style: none; }
+    .footer-col li { margin-bottom: 0.4rem; }
+    .footer-col a { color: var(--text-dim); text-decoration: none; font-size: 0.85rem; transition: color 0.2s; }
+    .footer-col a:hover { color: var(--cyan); }
+    .footer-bottom {
+      max-width: 1140px; margin: 2rem auto 0;
+      padding-top: 1.5rem; border-top: 1px solid var(--border);
+      display: flex; justify-content: space-between; align-items: center;
+      font-size: 0.78rem; color: var(--text-muted);
     }
 
-    /* --- MOBILE --- */
-    @media (max-width: 640px) {
-      .nav-links { display: none; }
-      .hero { padding-top: 5rem; }
-      section { padding: 3rem 1.25rem; }
+    /* --- RESPONSIVE --- */
+    @media (max-width: 768px) {
+      .nav-links, .nav-cta { display: none; }
+      .mobile-toggle { display: block; }
+      .hero { padding: 6rem 1.5rem 4rem; min-height: auto; }
+      .hero svg { width: 80px; height: 80px; }
+      section { padding: 3.5rem 1.25rem; }
+      .grid { grid-template-columns: 1fr; }
+      .tiktok-highlight { grid-template-columns: 1fr; }
+      .contact-layout { grid-template-columns: 1fr; }
+      .form-row { grid-template-columns: 1fr; }
+      .footer-inner { grid-template-columns: 1fr 1fr; }
+      .footer-bottom { flex-direction: column; gap: 0.5rem; text-align: center; }
     }
   </style>
 </head>
@@ -211,10 +310,14 @@
     </a>
     <ul class="nav-links">
       <li><a href="#services">Services</a></li>
+      <li><a href="#process">How It Works</a></li>
       <li><a href="#tiktok">TikTok Commerce</a></li>
       <li><a href="#about">About</a></li>
+      <li><a href="#faq">FAQ</a></li>
       <li><a href="#contact">Contact</a></li>
     </ul>
+    <a href="#contact" class="nav-cta">Get Started</a>
+    <button class="mobile-toggle" onclick="document.querySelector('.nav-links').classList.toggle('show')" aria-label="Menu">&#9776;</button>
   </div>
 </nav>
 
@@ -233,8 +336,14 @@
   </svg>
   <h1>AI-based <span class="accent">Tech</span> Inc</h1>
   <p class="tagline">AI Infrastructure &bull; Commerce &bull; Automation</p>
-  <p>We build intelligent tools and infrastructure that help cross-border e-commerce merchants scale globally with AI-driven automation, analytics, and platform integration.</p>
+  <p class="hero-desc">We build intelligent tools and infrastructure that help cross-border e-commerce merchants scale globally with AI-driven automation, analytics, and platform integration.</p>
+  <div class="hero-actions">
+    <a href="#contact" class="btn-primary">Get Started</a>
+    <a href="#services" class="btn-outline">Explore Services</a>
+  </div>
 </section>
+
+<hr class="section-divider">
 
 <!-- Services -->
 <section id="services">
@@ -244,32 +353,32 @@
     <p class="section-desc">End-to-end technology solutions for modern e-commerce operations across global marketplaces.</p>
     <div class="grid">
       <div class="card">
-        <div class="card-icon"><svg width="24" height="24" fill="none" stroke="#19e5d9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></div>
+        <div class="card-icon"><svg width="22" height="22" fill="none" stroke="#19e5d9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></div>
         <h3>E-Commerce ERP</h3>
         <p>Unified order management, inventory tracking, and fulfillment automation across multiple sales channels and marketplaces.</p>
       </div>
       <div class="card">
-        <div class="card-icon"><svg width="24" height="24" fill="none" stroke="#19e5d9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg></div>
+        <div class="card-icon"><svg width="22" height="22" fill="none" stroke="#19e5d9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg></div>
         <h3>Platform Integration</h3>
-        <p>Seamless API integration with TikTok Shop, and other major e-commerce platforms for automated store operations and data synchronization.</p>
+        <p>Seamless API integration with TikTok Shop and other major e-commerce platforms for automated store operations.</p>
       </div>
       <div class="card">
-        <div class="card-icon"><svg width="24" height="24" fill="none" stroke="#19e5d9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 002 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0022 16z"/><path d="M7.5 4.21l4.5 2.6 4.5-2.6M7.5 19.79V14.6L3 12M21 12l-4.5 2.6v5.19M3.27 6.96L12 12.01l8.73-5.05"/><path d="M12 22.08V12"/></svg></div>
+        <div class="card-icon"><svg width="22" height="22" fill="none" stroke="#19e5d9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 002 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0022 16z"/><path d="M3.27 6.96L12 12.01l8.73-5.05M12 22.08V12"/></svg></div>
         <h3>AI Analytics</h3>
         <p>Data-driven insights for product performance, market trends, and operational efficiency powered by machine learning.</p>
       </div>
       <div class="card">
-        <div class="card-icon"><svg width="24" height="24" fill="none" stroke="#19e5d9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg></div>
+        <div class="card-icon"><svg width="22" height="22" fill="none" stroke="#19e5d9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg></div>
         <h3>Cross-Border Solutions</h3>
-        <p>Localization, compliance, and logistics optimization tools designed for merchants expanding into Southeast Asian and global markets.</p>
+        <p>Localization, compliance, and logistics optimization for merchants expanding into Southeast Asian and global markets.</p>
       </div>
       <div class="card">
-        <div class="card-icon"><svg width="24" height="24" fill="none" stroke="#19e5d9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+        <div class="card-icon"><svg width="22" height="22" fill="none" stroke="#19e5d9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
         <h3>Regulatory Compliance</h3>
-        <p>Product registration, documentation management, and regulatory filing support for cosmetics, health products, and consumer goods.</p>
+        <p>Product registration, documentation management, and regulatory filing support for cosmetics and consumer goods.</p>
       </div>
       <div class="card">
-        <div class="card-icon"><svg width="24" height="24" fill="none" stroke="#19e5d9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg></div>
+        <div class="card-icon"><svg width="22" height="22" fill="none" stroke="#19e5d9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg></div>
         <h3>Custom Development</h3>
         <p>Tailored software solutions and workflow automation built to match your specific business processes and growth objectives.</p>
       </div>
@@ -277,17 +386,51 @@
   </div>
 </section>
 
+<hr class="section-divider">
+
+<!-- How It Works -->
+<section id="process" class="process-section">
+  <div class="container">
+    <p class="section-label">How It Works</p>
+    <h2 class="section-title">From Idea to Global Sales</h2>
+    <p class="section-desc">Our streamlined process gets your products in front of international customers quickly and compliantly.</p>
+    <div class="process-steps">
+      <div class="step">
+        <div class="step-number">1</div>
+        <h4>Consultation</h4>
+        <p>We assess your product catalog, target markets, and business goals to build a tailored go-to-market strategy.</p>
+      </div>
+      <div class="step">
+        <div class="step-number">2</div>
+        <h4>Compliance & Setup</h4>
+        <p>We handle all regulatory documentation (FDA, CPNP), platform registration, and store setup on TikTok Shop and other channels.</p>
+      </div>
+      <div class="step">
+        <div class="step-number">3</div>
+        <h4>Launch & Optimize</h4>
+        <p>AI-powered listing optimization, automated inventory sync, and real-time analytics ensure your store runs at peak performance.</p>
+      </div>
+      <div class="step">
+        <div class="step-number">4</div>
+        <h4>Scale</h4>
+        <p>Expand into new markets and categories with data-driven product selection, trend forecasting, and operational automation.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="section-divider">
+
 <!-- TikTok Cross-Border Commerce -->
 <section id="tiktok" class="tiktok-section">
   <div class="container">
     <p class="section-label">Cross-Border Commerce</p>
     <h2 class="section-title">TikTok Shop &mdash; Southeast Asia &amp; Beyond</h2>
-    <p class="section-desc">We operate and enable cross-border e-commerce on TikTok Shop, connecting quality Chinese manufacturers with consumers across Southeast Asia through data-driven product selection, compliance management, and automated store operations.</p>
-
+    <p class="section-desc">We operate and enable cross-border e-commerce on TikTok Shop, connecting quality Chinese manufacturers with consumers across Southeast Asia.</p>
     <div class="tiktok-highlight">
       <div class="tiktok-text">
         <h3>End-to-End TikTok Shop Operations</h3>
-        <p>From product sourcing and FDA/regulatory compliance to listing optimization and fulfillment, we manage the full lifecycle of cross-border selling on TikTok Shop. Our AI-powered tools handle market research, trend analysis, and inventory management so merchants can focus on growth.</p>
+        <p>From product sourcing and FDA/regulatory compliance to listing optimization and fulfillment, we manage the full lifecycle of cross-border selling on TikTok Shop.</p>
         <ul class="tiktok-features">
           <li>Product sourcing from verified Chinese manufacturers with full supply-chain traceability</li>
           <li>Regulatory compliance &amp; documentation (FDA, CPNP) for cosmetics and consumer goods</li>
@@ -330,6 +473,8 @@
   </div>
 </section>
 
+<hr class="section-divider">
+
 <!-- About -->
 <section id="about">
   <div class="container">
@@ -357,31 +502,184 @@
   </div>
 </section>
 
-<!-- Contact -->
-<section id="contact" class="contact-section">
+<hr class="section-divider">
+
+<!-- FAQ -->
+<section id="faq" class="faq-section">
   <div class="container">
-    <p class="section-label">Get in Touch</p>
-    <h2 class="section-title">Contact Us</h2>
-    <div class="contact-grid" style="margin-top: 2rem;">
-      <div class="contact-item">
-        <h4>Headquarters</h4>
-        <p>Zhangzhou, Fujian, China</p>
+    <p class="section-label">FAQ</p>
+    <h2 class="section-title">Frequently Asked Questions</h2>
+    <p class="section-desc">Common questions about our services and how we work with merchants.</p>
+    <div class="faq-list">
+      <div class="faq-item">
+        <button class="faq-q">What is AI-based Tech Inc?</button>
+        <div class="faq-a"><p>AI-based Tech Inc (漳州市未界智能科技有限公司) is a technology company that builds AI-powered tools for cross-border e-commerce. We help merchants sell internationally through platforms like TikTok Shop by providing ERP systems, API integrations, market analytics, and regulatory compliance support.</p></div>
       </div>
-      <div class="contact-item">
-        <h4>Email</h4>
-        <p>contact@ai-based-tech.com</p>
+      <div class="faq-item">
+        <button class="faq-q">Which markets do you operate in?</button>
+        <div class="faq-a"><p>Our primary focus is Southeast Asia, with Vietnam as our leading market. We also support expansion into other TikTok Shop markets including Thailand, Philippines, Malaysia, and Indonesia. Our technology platform is built to support any market where TikTok Shop operates.</p></div>
       </div>
-      <div class="contact-item">
-        <h4>Business Hours</h4>
-        <p>Mon - Fri, 9:00 - 18:00 (CST)</p>
+      <div class="faq-item">
+        <button class="faq-q">What product categories do you support?</button>
+        <div class="faq-a"><p>We specialize in beauty and cosmetics — including lip products, blush, eyeshadow, skincare sets, and more. This is the #1 GMV category on TikTok Shop in Southeast Asia. We also support other consumer goods categories and can help evaluate new product opportunities using our AI-driven trend analysis tools.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">How do you handle regulatory compliance?</button>
+        <div class="faq-a"><p>We manage the full compliance lifecycle including FDA product registration, CPNP notifications for EU markets, product documentation preparation, and ongoing regulatory monitoring. We currently maintain FDA certifications for 24+ cosmetics products and handle all paperwork so merchants can focus on selling.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">Do you provide TikTok Shop API integration?</button>
+        <div class="faq-a"><p>Yes. We build and maintain direct integrations with the TikTok Shop Partner API, enabling real-time order synchronization, automated inventory management, product listing automation, and comprehensive analytics dashboards. Our tools connect your supply chain directly to TikTok Shop's infrastructure.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">How do I get started working with you?</button>
+        <div class="faq-a"><p>Reach out via our contact form or email us at contact@ai-based-tech.com. We'll schedule a consultation to understand your product catalog, target markets, and goals, then propose a tailored strategy for launching or scaling your cross-border e-commerce operations.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">What makes your approach different?</button>
+        <div class="faq-a"><p>We combine AI-driven market intelligence with hands-on operational expertise. Instead of generic tools, we provide end-to-end solutions — from identifying trending products using machine learning, to handling compliance paperwork, to automating daily store operations. Everything is integrated into a single platform purpose-built for cross-border commerce on TikTok Shop.</p></div>
       </div>
     </div>
   </div>
 </section>
 
-<footer>
-  <p>&copy; 2025 AI-based Tech Inc (漳州市未界智能科技有限公司). All rights reserved.</p>
+<hr class="section-divider">
+
+<!-- Contact -->
+<section id="contact" class="contact-section">
+  <div class="container">
+    <p class="section-label">Get in Touch</p>
+    <h2 class="section-title">Contact Us</h2>
+    <p class="section-desc">Ready to grow your cross-border business? Send us a message and we'll get back to you within 24 hours.</p>
+    <div class="contact-layout">
+      <div class="contact-info">
+        <div class="contact-item">
+          <h4>Headquarters</h4>
+          <p>Zhangzhou, Fujian, China</p>
+        </div>
+        <div class="contact-item">
+          <h4>Email</h4>
+          <p>contact@ai-based-tech.com</p>
+        </div>
+        <div class="contact-item">
+          <h4>Business Hours</h4>
+          <p>Monday &ndash; Friday, 9:00 &ndash; 18:00 (CST, UTC+8)</p>
+        </div>
+        <div class="contact-item">
+          <h4>Response Time</h4>
+          <p>We typically respond within one business day.</p>
+        </div>
+      </div>
+      <form class="contact-form" onsubmit="handleSubmit(event)">
+        <div class="form-row">
+          <input type="text" placeholder="Your Name" required>
+          <input type="email" placeholder="Email Address" required>
+        </div>
+        <select required>
+          <option value="" disabled selected>Select a topic</option>
+          <option>TikTok Shop Operations</option>
+          <option>Platform Integration / API</option>
+          <option>Regulatory Compliance</option>
+          <option>Product Sourcing</option>
+          <option>Custom Development</option>
+          <option>Partnership Inquiry</option>
+          <option>Other</option>
+        </select>
+        <textarea placeholder="Tell us about your project or question..." rows="4" required></textarea>
+        <button type="submit" class="form-submit">Send Message</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <a href="#" class="nav-brand" style="margin-bottom: 0.25rem;">
+        <svg viewBox="0 0 1024 1024" width="28" height="28" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <defs><linearGradient id="bg3" x1="144" y1="120" x2="912" y2="912" gradientUnits="userSpaceOnUse"><stop stop-color="#08111F"/><stop offset="1" stop-color="#112741"/></linearGradient><linearGradient id="stroke3" x1="256" y1="238" x2="760" y2="786" gradientUnits="userSpaceOnUse"><stop stop-color="#A7FFF5"/><stop offset="0.55" stop-color="#67E8F9"/><stop offset="1" stop-color="#3B82F6"/></linearGradient></defs>
+          <rect x="72" y="72" width="880" height="880" rx="220" fill="url(#bg3)"/><g><path d="M312 760L512 264L712 760" stroke="url(#stroke3)" stroke-width="34" stroke-linecap="round" stroke-linejoin="round"/><path d="M388 566H636" stroke="url(#stroke3)" stroke-width="30" stroke-linecap="round"/></g>
+        </svg>
+        <span>AI-based Tech Inc</span>
+      </a>
+      <p>AI-powered infrastructure for cross-border e-commerce. Helping merchants scale globally with automation and intelligence.</p>
+    </div>
+    <div class="footer-col">
+      <h5>Services</h5>
+      <ul>
+        <li><a href="#services">E-Commerce ERP</a></li>
+        <li><a href="#services">Platform Integration</a></li>
+        <li><a href="#services">AI Analytics</a></li>
+        <li><a href="#services">Compliance</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>Company</h5>
+      <ul>
+        <li><a href="#about">About Us</a></li>
+        <li><a href="#tiktok">TikTok Commerce</a></li>
+        <li><a href="#process">How It Works</a></li>
+        <li><a href="#faq">FAQ</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>Contact</h5>
+      <ul>
+        <li><a href="#contact">Get in Touch</a></li>
+        <li><a href="mailto:contact@ai-based-tech.com">Email Us</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>&copy; 2025 AI-based Tech Inc (漳州市未界智能科技有限公司). All rights reserved.</p>
+    <p>Zhangzhou, Fujian, China</p>
+  </div>
 </footer>
+
+<script>
+// FAQ accordion
+document.querySelectorAll('.faq-q').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const item = btn.parentElement;
+    const wasOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+    if (!wasOpen) item.classList.add('open');
+  });
+});
+
+// Contact form
+function handleSubmit(e) {
+  e.preventDefault();
+  const btn = e.target.querySelector('.form-submit');
+  btn.textContent = 'Message Sent!';
+  btn.style.background = '#10b981';
+  setTimeout(() => {
+    btn.textContent = 'Send Message';
+    btn.style.background = '';
+    e.target.reset();
+  }, 3000);
+}
+
+// Smooth scroll for nav active state
+const sections = document.querySelectorAll('section[id]');
+window.addEventListener('scroll', () => {
+  const scrollY = window.scrollY + 100;
+  sections.forEach(s => {
+    const top = s.offsetTop - 80;
+    const bottom = top + s.offsetHeight;
+    const id = s.getAttribute('id');
+    const link = document.querySelector(`.nav-links a[href="#${id}"]`);
+    if (link) {
+      if (scrollY >= top && scrollY < bottom) {
+        link.style.color = '#19e5d9';
+      } else {
+        link.style.color = '';
+      }
+    }
+  });
+});
+</script>
 
 </body>
 </html>
