@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI-based Tech Inc</title>
+  <meta name="description" content="AI-based Tech Inc — AI-powered cross-border e-commerce infrastructure, automation tools, and data-driven solutions for global merchants.">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg-deep: #050d1a;
+      --bg-card: #0a1628;
+      --cyan: #19e5d9;
+      --cyan-dim: rgba(25, 229, 217, 0.12);
+      --blue: #3b82f6;
+      --text: #e2e8f0;
+      --text-dim: #94a3b8;
+      --border: rgba(15, 124, 153, 0.3);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+      background: var(--bg-deep);
+      color: var(--text);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    /* --- NAV --- */
+    nav {
+      position: fixed; top: 0; width: 100%; z-index: 100;
+      background: rgba(5, 13, 26, 0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 2rem;
+    }
+    .nav-inner {
+      max-width: 1100px; margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between;
+      height: 64px;
+    }
+    .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .nav-brand svg { width: 36px; height: 36px; }
+    .nav-brand span { font-size: 1.05rem; font-weight: 600; color: var(--text); letter-spacing: 0.02em; }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a {
+      color: var(--text-dim); text-decoration: none; font-size: 0.9rem;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--cyan); }
+
+    /* --- HERO --- */
+    .hero {
+      min-height: 100vh;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center; padding: 6rem 2rem 4rem;
+      background: radial-gradient(ellipse 60% 50% at 50% 40%, rgba(25, 229, 217, 0.06) 0%, transparent 70%);
+    }
+    .hero svg { width: 120px; height: 120px; margin-bottom: 2rem; filter: drop-shadow(0 0 30px rgba(25, 229, 217, 0.25)); }
+    .hero h1 { font-size: clamp(2rem, 5vw, 3.2rem); font-weight: 700; margin-bottom: 0.5rem; }
+    .hero h1 .accent { color: var(--cyan); }
+    .hero .tagline {
+      font-size: 0.95rem; color: var(--text-dim); letter-spacing: 0.25em; text-transform: uppercase;
+      margin-bottom: 2rem;
+    }
+    .hero p {
+      max-width: 600px; font-size: 1.1rem; color: var(--text-dim); line-height: 1.8;
+    }
+
+    /* --- SECTIONS --- */
+    section { padding: 5rem 2rem; }
+    .container { max-width: 1100px; margin: 0 auto; }
+    .section-label {
+      font-size: 0.8rem; letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--cyan); margin-bottom: 0.75rem;
+    }
+    .section-title {
+      font-size: clamp(1.5rem, 3vw, 2rem); font-weight: 700; margin-bottom: 1rem;
+    }
+    .section-desc {
+      color: var(--text-dim); max-width: 560px; margin-bottom: 3rem;
+    }
+
+    /* --- SERVICES GRID --- */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+    }
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 2rem;
+      transition: border-color 0.3s, transform 0.3s;
+    }
+    .card:hover { border-color: var(--cyan); transform: translateY(-4px); }
+    .card-icon {
+      width: 48px; height: 48px; border-radius: 10px;
+      background: var(--cyan-dim);
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 1.25rem; font-size: 1.4rem;
+    }
+    .card h3 { font-size: 1.1rem; font-weight: 600; margin-bottom: 0.5rem; }
+    .card p { font-size: 0.9rem; color: var(--text-dim); line-height: 1.7; }
+
+    /* --- ABOUT --- */
+    .about-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 2rem; margin-top: 2.5rem;
+    }
+    .stat { text-align: center; }
+    .stat-value {
+      font-size: 2.2rem; font-weight: 700; color: var(--cyan);
+      margin-bottom: 0.25rem;
+    }
+    .stat-label { font-size: 0.85rem; color: var(--text-dim); }
+
+    /* --- CONTACT --- */
+    .contact-section {
+      background: var(--bg-card);
+      border-top: 1px solid var(--border);
+    }
+    .contact-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 2rem;
+    }
+    .contact-item h4 { font-size: 0.8rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--cyan); margin-bottom: 0.5rem; }
+    .contact-item p { color: var(--text-dim); font-size: 0.95rem; }
+
+    /* --- FOOTER --- */
+    footer {
+      text-align: center; padding: 2rem;
+      border-top: 1px solid var(--border);
+      font-size: 0.8rem; color: var(--text-dim);
+    }
+
+    /* --- MOBILE --- */
+    @media (max-width: 640px) {
+      .nav-links { display: none; }
+      .hero { padding-top: 5rem; }
+      section { padding: 3rem 1.25rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Nav -->
+<nav>
+  <div class="nav-inner">
+    <a href="#" class="nav-brand">
+      <svg viewBox="0 0 1024 1024" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="bg" x1="144" y1="120" x2="912" y2="912" gradientUnits="userSpaceOnUse"><stop stop-color="#08111F"/><stop offset="1" stop-color="#112741"/></linearGradient>
+          <linearGradient id="stroke" x1="256" y1="238" x2="760" y2="786" gradientUnits="userSpaceOnUse"><stop stop-color="#A7FFF5"/><stop offset="0.55" stop-color="#67E8F9"/><stop offset="1" stop-color="#3B82F6"/></linearGradient>
+        </defs>
+        <rect x="72" y="72" width="880" height="880" rx="220" fill="url(#bg)"/>
+        <rect x="98" y="98" width="828" height="828" rx="194" stroke="#0F7C99" stroke-opacity="0.45" stroke-width="4"/>
+        <g><path d="M312 760L512 264L712 760" stroke="url(#stroke)" stroke-width="34" stroke-linecap="round" stroke-linejoin="round"/><path d="M388 566H636" stroke="url(#stroke)" stroke-width="30" stroke-linecap="round"/><circle cx="312" cy="760" r="24" fill="#09192C" stroke="#19E5D9" stroke-width="10"/><circle cx="512" cy="264" r="24" fill="#09192C" stroke="#19E5D9" stroke-width="10"/><circle cx="712" cy="760" r="24" fill="#09192C" stroke="#19E5D9" stroke-width="10"/><circle cx="512" cy="566" r="22" fill="#09192C" stroke="#38BDF8" stroke-width="10"/></g>
+        <path d="M302 828H722" stroke="#1A6B91" stroke-width="10" stroke-linecap="round"/><path d="M360 864H664" stroke="#1A6B91" stroke-width="6" stroke-linecap="round" opacity="0.7"/>
+      </svg>
+      <span>AI-based Tech Inc</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#services">Services</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+  <svg viewBox="0 0 1024 1024" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="bg2" x1="144" y1="120" x2="912" y2="912" gradientUnits="userSpaceOnUse"><stop stop-color="#08111F"/><stop offset="1" stop-color="#112741"/></linearGradient>
+      <linearGradient id="stroke2" x1="256" y1="238" x2="760" y2="786" gradientUnits="userSpaceOnUse"><stop stop-color="#A7FFF5"/><stop offset="0.55" stop-color="#67E8F9"/><stop offset="1" stop-color="#3B82F6"/></linearGradient>
+      <filter id="glow2" x="180" y="150" width="680" height="724" filterUnits="userSpaceOnUse"><feGaussianBlur stdDeviation="18" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+    </defs>
+    <rect x="72" y="72" width="880" height="880" rx="220" fill="url(#bg2)"/>
+    <rect x="98" y="98" width="828" height="828" rx="194" stroke="#0F7C99" stroke-opacity="0.45" stroke-width="4"/>
+    <g filter="url(#glow2)"><path d="M312 760L512 264L712 760" stroke="url(#stroke2)" stroke-width="34" stroke-linecap="round" stroke-linejoin="round"/><path d="M388 566H636" stroke="url(#stroke2)" stroke-width="30" stroke-linecap="round"/><path d="M512 264V362" stroke="url(#stroke2)" stroke-width="22" stroke-linecap="round"/><circle cx="312" cy="760" r="24" fill="#09192C" stroke="#19E5D9" stroke-width="10"/><circle cx="512" cy="264" r="24" fill="#09192C" stroke="#19E5D9" stroke-width="10"/><circle cx="712" cy="760" r="24" fill="#09192C" stroke="#19E5D9" stroke-width="10"/><circle cx="512" cy="566" r="22" fill="#09192C" stroke="#38BDF8" stroke-width="10"/></g>
+    <path d="M302 828H722" stroke="#1A6B91" stroke-width="10" stroke-linecap="round"/><path d="M360 864H664" stroke="#1A6B91" stroke-width="6" stroke-linecap="round" opacity="0.7"/>
+  </svg>
+  <h1>AI-based <span class="accent">Tech</span> Inc</h1>
+  <p class="tagline">AI Infrastructure &bull; Commerce &bull; Automation</p>
+  <p>We build intelligent tools and infrastructure that help cross-border e-commerce merchants scale globally with AI-driven automation, analytics, and platform integration.</p>
+</section>
+
+<!-- Services -->
+<section id="services">
+  <div class="container">
+    <p class="section-label">What We Do</p>
+    <h2 class="section-title">Our Services</h2>
+    <p class="section-desc">End-to-end technology solutions for modern e-commerce operations across global marketplaces.</p>
+    <div class="grid">
+      <div class="card">
+        <div class="card-icon"><svg width="24" height="24" fill="none" stroke="#19e5d9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></div>
+        <h3>E-Commerce ERP</h3>
+        <p>Unified order management, inventory tracking, and fulfillment automation across multiple sales channels and marketplaces.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon"><svg width="24" height="24" fill="none" stroke="#19e5d9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg></div>
+        <h3>Platform Integration</h3>
+        <p>Seamless API integration with TikTok Shop, and other major e-commerce platforms for automated store operations and data synchronization.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon"><svg width="24" height="24" fill="none" stroke="#19e5d9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 002 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0022 16z"/><path d="M7.5 4.21l4.5 2.6 4.5-2.6M7.5 19.79V14.6L3 12M21 12l-4.5 2.6v5.19M3.27 6.96L12 12.01l8.73-5.05"/><path d="M12 22.08V12"/></svg></div>
+        <h3>AI Analytics</h3>
+        <p>Data-driven insights for product performance, market trends, and operational efficiency powered by machine learning.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon"><svg width="24" height="24" fill="none" stroke="#19e5d9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg></div>
+        <h3>Cross-Border Solutions</h3>
+        <p>Localization, compliance, and logistics optimization tools designed for merchants expanding into Southeast Asian and global markets.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon"><svg width="24" height="24" fill="none" stroke="#19e5d9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+        <h3>Regulatory Compliance</h3>
+        <p>Product registration, documentation management, and regulatory filing support for cosmetics, health products, and consumer goods.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon"><svg width="24" height="24" fill="none" stroke="#19e5d9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg></div>
+        <h3>Custom Development</h3>
+        <p>Tailored software solutions and workflow automation built to match your specific business processes and growth objectives.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- About -->
+<section id="about">
+  <div class="container">
+    <p class="section-label">About Us</p>
+    <h2 class="section-title">Built for Global Commerce</h2>
+    <p class="section-desc">AI-based Tech Inc (漳州市未界智能科技有限公司) is a technology company headquartered in Zhangzhou, Fujian, China. We specialize in developing AI-powered software tools for cross-border e-commerce merchants, helping businesses streamline operations and scale internationally.</p>
+    <div class="about-grid">
+      <div class="stat">
+        <div class="stat-value">AI</div>
+        <div class="stat-label">Powered Infrastructure</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value">SEA+</div>
+        <div class="stat-label">Market Coverage</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value">24/7</div>
+        <div class="stat-label">Automated Operations</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value">API</div>
+        <div class="stat-label">Platform Integrations</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Contact -->
+<section id="contact" class="contact-section">
+  <div class="container">
+    <p class="section-label">Get in Touch</p>
+    <h2 class="section-title">Contact Us</h2>
+    <div class="contact-grid" style="margin-top: 2rem;">
+      <div class="contact-item">
+        <h4>Headquarters</h4>
+        <p>Zhangzhou, Fujian, China</p>
+      </div>
+      <div class="contact-item">
+        <h4>Email</h4>
+        <p>contact@ai-based-tech.com</p>
+      </div>
+      <div class="contact-item">
+        <h4>Business Hours</h4>
+        <p>Mon - Fri, 9:00 - 18:00 (CST)</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>&copy; 2025 AI-based Tech Inc (漳州市未界智能科技有限公司). All rights reserved.</p>
+</footer>
+
+</body>
+</html>
