@@ -107,6 +107,49 @@
     .card h3 { font-size: 1.1rem; font-weight: 600; margin-bottom: 0.5rem; }
     .card p { font-size: 0.9rem; color: var(--text-dim); line-height: 1.7; }
 
+    /* --- TIKTOK --- */
+    .tiktok-section {
+      background: linear-gradient(180deg, var(--bg-deep) 0%, #0a0f1e 50%, var(--bg-deep) 100%);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .tiktok-highlight {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem; align-items: center;
+    }
+    .tiktok-text h3 { font-size: 1.3rem; font-weight: 600; margin-bottom: 1rem; }
+    .tiktok-text p { color: var(--text-dim); line-height: 1.8; margin-bottom: 1rem; }
+    .tiktok-features { list-style: none; margin-top: 1.5rem; }
+    .tiktok-features li {
+      padding: 0.6rem 0; color: var(--text-dim); font-size: 0.95rem;
+      display: flex; align-items: flex-start; gap: 0.75rem;
+    }
+    .tiktok-features li::before {
+      content: ''; display: inline-block; width: 8px; height: 8px;
+      background: var(--cyan); border-radius: 50%; margin-top: 0.45rem; flex-shrink: 0;
+    }
+    .tiktok-stats {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;
+    }
+    .tiktok-stat-card {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: 12px; padding: 1.5rem; text-align: center;
+    }
+    .tiktok-stat-card .stat-value { font-size: 1.8rem; font-weight: 700; color: var(--cyan); }
+    .tiktok-stat-card .stat-label { font-size: 0.8rem; color: var(--text-dim); margin-top: 0.25rem; }
+    .tiktok-categories {
+      display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1.5rem;
+    }
+    .tag {
+      background: var(--cyan-dim); border: 1px solid rgba(25, 229, 217, 0.2);
+      color: var(--cyan); padding: 0.3rem 0.8rem; border-radius: 20px;
+      font-size: 0.8rem; white-space: nowrap;
+    }
+    @media (max-width: 768px) {
+      .tiktok-highlight { grid-template-columns: 1fr; }
+    }
+
     /* --- ABOUT --- */
     .about-grid {
       display: grid;
@@ -168,6 +211,7 @@
     </a>
     <ul class="nav-links">
       <li><a href="#services">Services</a></li>
+      <li><a href="#tiktok">TikTok Commerce</a></li>
       <li><a href="#about">About</a></li>
       <li><a href="#contact">Contact</a></li>
     </ul>
@@ -228,6 +272,59 @@
         <div class="card-icon"><svg width="24" height="24" fill="none" stroke="#19e5d9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg></div>
         <h3>Custom Development</h3>
         <p>Tailored software solutions and workflow automation built to match your specific business processes and growth objectives.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TikTok Cross-Border Commerce -->
+<section id="tiktok" class="tiktok-section">
+  <div class="container">
+    <p class="section-label">Cross-Border Commerce</p>
+    <h2 class="section-title">TikTok Shop &mdash; Southeast Asia &amp; Beyond</h2>
+    <p class="section-desc">We operate and enable cross-border e-commerce on TikTok Shop, connecting quality Chinese manufacturers with consumers across Southeast Asia through data-driven product selection, compliance management, and automated store operations.</p>
+
+    <div class="tiktok-highlight">
+      <div class="tiktok-text">
+        <h3>End-to-End TikTok Shop Operations</h3>
+        <p>From product sourcing and FDA/regulatory compliance to listing optimization and fulfillment, we manage the full lifecycle of cross-border selling on TikTok Shop. Our AI-powered tools handle market research, trend analysis, and inventory management so merchants can focus on growth.</p>
+        <ul class="tiktok-features">
+          <li>Product sourcing from verified Chinese manufacturers with full supply-chain traceability</li>
+          <li>Regulatory compliance &amp; documentation (FDA, CPNP) for cosmetics and consumer goods</li>
+          <li>AI-driven product ranking and trend analysis tailored to SEA market preferences</li>
+          <li>Automated listing creation, translation, and localization for target markets</li>
+          <li>TikTok Shop API integration for real-time order sync, inventory, and analytics</li>
+          <li>Short-video and live-stream commerce strategy consulting</li>
+        </ul>
+      </div>
+      <div>
+        <div class="tiktok-stats">
+          <div class="tiktok-stat-card">
+            <div class="stat-value">Vietnam</div>
+            <div class="stat-label">Primary Market</div>
+          </div>
+          <div class="tiktok-stat-card">
+            <div class="stat-value">24+</div>
+            <div class="stat-label">FDA-Certified Products</div>
+          </div>
+          <div class="tiktok-stat-card">
+            <div class="stat-value">Beauty</div>
+            <div class="stat-label">#1 GMV Category on TikTok SEA</div>
+          </div>
+          <div class="tiktok-stat-card">
+            <div class="stat-value">API</div>
+            <div class="stat-label">Full Platform Integration</div>
+          </div>
+        </div>
+        <div class="tiktok-categories">
+          <span class="tag">Lip Products</span>
+          <span class="tag">Blush &amp; Highlighter</span>
+          <span class="tag">Eye Shadow</span>
+          <span class="tag">Skincare Sets</span>
+          <span class="tag">Lip Glaze</span>
+          <span class="tag">Eyeliner</span>
+          <span class="tag">Powder &amp; Foundation</span>
+        </div>
       </div>
     </div>
   </div>
