@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+  <title>萤火小径 · Firefly Trail</title>
+  <meta name="description" content="一个治愈系的 2D 跑图小游戏：从清晨的花田，慢慢走到夜晚的海边灯塔。A cozy 2D walk from a morning meadow to a lighthouse by the night sea.">
+  <meta name="theme-color" content="#b9dcf1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta property="og:title" content="萤火小径 · Firefly Trail">
+  <meta property="og:description" content="一个治愈系的 2D 跑图小游戏 · a cozy little walk toward the sea">
+  <meta property="og:image" content="docs/cover.jpg">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3CradialGradient id='g'%3E%3Cstop offset='0' stop-color='%23fffbe6'/%3E%3Cstop offset='.35' stop-color='%23ffd27a'/%3E%3Cstop offset='1' stop-color='%23ffd27a' stop-opacity='0'/%3E%3C/radialGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='16' fill='%232e3c7c'/%3E%3Ccircle cx='32' cy='32' r='26' fill='url(%23g)'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&family=ZCOOL+XiaoWei&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <canvas id="game" aria-label="Firefly Trail game"></canvas>
+
+  <div id="hud">
+    <div class="hud-left">
+      <div class="pill" id="pill-motes" title="微光 · glimmers"><span class="mote-dot"></span><span id="mote-count">0</span></div>
+      <div class="pill" id="pill-lanterns" title="灯笼 · lanterns">
+        <span class="lan"></span><span class="lan"></span><span class="lan"></span><span class="lan"></span><span class="lan"></span>
+      </div>
+    </div>
+    <div class="hud-right">
+      <button class="icon-btn" id="btn-sound" aria-label="声音">
+        <svg class="ico-on" viewBox="0 0 24 24"><path d="M4 9h4l5-4v14l-5-4H4z"/><path class="ln" d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12"/></svg>
+        <svg class="ico-off" viewBox="0 0 24 24"><path d="M4 9h4l5-4v14l-5-4H4z"/><path class="ln" d="M17 9.5l5 5M22 9.5l-5 5"/></svg>
+      </button>
+      <button class="icon-btn txt" id="btn-lang">EN</button>
+      <button class="icon-btn" id="btn-full" aria-label="全屏 / fullscreen">
+        <svg viewBox="0 0 24 24"><path class="ln" d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <div id="toast"><div id="toast-name"></div><div id="toast-sub"></div></div>
+  <div id="hint"></div>
+
+  <div id="touch">
+    <div class="pad pad-l">
+      <button class="tbtn" data-k="left" aria-label="left"><svg viewBox="0 0 24 24"><path class="ln" d="M15 5l-7 7 7 7"/></svg></button>
+      <button class="tbtn" data-k="right" aria-label="right"><svg viewBox="0 0 24 24"><path class="ln" d="M9 5l7 7-7 7"/></svg></button>
+    </div>
+    <div class="pad pad-r">
+      <button class="tbtn small" data-k="sit" aria-label="sit"><svg viewBox="0 0 24 24"><path class="ln" d="M4 17c3-4 13-4 16 0M8 13.5c0-2.5 1.8-4.5 4-4.5s4 2 4 4.5"/></svg></button>
+      <button class="tbtn small act" data-k="act" aria-label="interact">✋</button>
+      <button class="tbtn big" data-k="jump" aria-label="jump"><svg viewBox="0 0 24 24"><path class="ln" d="M6 14l6-6 6 6"/></svg></button>
+    </div>
+  </div>
+
+  <div id="card">
+    <div class="paper">
+      <div class="stamp" id="card-stamp">一</div>
+      <div class="card-title" id="card-title"></div>
+      <div class="card-main" id="card-main"></div>
+      <div class="card-alt" id="card-alt"></div>
+      <div class="card-ded" id="card-ded"></div>
+      <div class="card-tap" id="card-tap"></div>
+    </div>
+  </div>
+
+  <div id="title">
+    <div class="title-card">
+      <h1 id="t-title">萤火小径</h1>
+      <div id="t-sub" class="sub">Firefly Trail</div>
+      <p id="t-tag" class="tag"></p>
+      <div class="title-btns">
+        <button id="btn-start" class="btn primary">开始漫游</button>
+        <button id="btn-new" class="btn ghost hidden">重新开始</button>
+      </div>
+      <p id="t-controls" class="controls"></p>
+      <p id="t-landscape" class="landscape"></p>
+    </div>
+    <p id="t-ded" class="ded"></p>
+    <button id="t-lang" class="chip">EN</button>
+  </div>
+
+  <div id="fade"></div>
+
+  <noscript><p style="position:fixed;inset:0;display:grid;place-items:center;font:16px sans-serif">需要开启 JavaScript · Please enable JavaScript</p></noscript>
+
+  <script src="js/util.js"></script>
+  <script src="js/i18n.js"></script>
+  <script src="js/world.js"></script>
+  <script src="js/audio.js"></script>
+  <script src="js/draw.js"></script>
+  <script src="js/game.js"></script>
+</body>
+</html>
