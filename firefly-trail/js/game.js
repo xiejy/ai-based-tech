@@ -551,7 +551,8 @@
     return FT.STR[G.lang];
   }
   function bubble(b, visible, text, dt) {
-    if (text !== b.text) {
+    // a bubble that is fading out keeps its line instead of flashing a new one
+    if (text !== b.text && (visible || b.a <= 0.05)) {
       if (b.a > 0.05 && visible) b.chars = 0;
       b.text = text;
     }
@@ -581,7 +582,7 @@
       bubble(n.bub, vis, FT.NPC_LINES[n.type][G.lang][n.petT < 6 ? 1 : 0], dt);
       if (n.bub.a > 0.01) {
         const gy = n.water ? Wd.LAKE_Y : Wd.surfaceY(n.x);
-        G.bubbles.push({ x: n.x, y: gy - NPC_H[n.type] - 4, text: n.bub.text, chars: n.bub.chars, a: n.bub.a });
+        G.bubbles.push({ x: n.x, y: gy - NPC_H[n.type] - 4, text: n.bub.text, chars: n.bub.chars, a: n.bub.a, side: Math.abs(d) < 80 ? (d > 0 ? -1 : 1) : 0 });
       }
     }
     for (const L of G.lanterns) {
@@ -594,7 +595,7 @@
       const text = need > 0 ? str.needMotes.replace('{n}', need) : str.lanternHint;
       const vis = Math.abs(p.x - L.x) < 90 && !L.busy && G.state === 'play';
       bubble(L.bub, vis, text, dt);
-      if (L.bub.a > 0.01) G.bubbles.push({ x: L.x, y: Wd.surfaceY(L.x) - 92, text: L.bub.text, chars: L.bub.chars, a: L.bub.a });
+      if (L.bub.a > 0.01) G.bubbles.push({ x: L.x, y: Wd.surfaceY(L.x) - 124, text: L.bub.text, chars: L.bub.chars, a: L.bub.a });
     }
     const LH = G.lighthouse;
     if (LH.lit) LH.litT += dt;

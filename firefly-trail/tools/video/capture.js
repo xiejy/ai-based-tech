@@ -44,6 +44,9 @@ const SYNC = `(vt) => {
   await page.clock.install({ time: 0 });
   await page.goto(`${base}?capture&nosave&lang=${shot.lang || 'zh'}${shot.query ? '&' + shot.query : ''}`);
   await page.waitForFunction(() => window.FT && FT.capture);
+  // video look: no sound/language/fullscreen buttons, and the ✋ prompt phone viewers recognise
+  await page.addStyleTag({ content: '#hud .hud-right { display: none !important; }' });
+  await page.evaluate(() => { FT.G.touch = true; });
   // freeze the page clock: from here on it only moves when we step a frame
   await page.clock.pauseAt((await page.evaluate(() => Date.now())) + 250);
   // load every glyph the game can show, so no text pops in mid-shot

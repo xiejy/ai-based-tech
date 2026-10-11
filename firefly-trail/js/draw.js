@@ -1905,7 +1905,8 @@
       let line = '';
       for (const u of units) {
         const test = line ? (zh ? line + u : line + ' ' + u) : u;
-        if (ctx.measureText(test).width > maxW && line) {
+        // never start a line with closing punctuation (，。！？…)
+        if (ctx.measureText(test).width > maxW && line && !(zh && /[，。！？、…～）」』]/.test(u))) {
           out.push(line);
           line = u;
         } else line = test;
@@ -1916,7 +1917,7 @@
   }
   function drawBubble(b) {
     const zh = G.lang === 'zh';
-    const px = Math.round(clamp(12 * Math.sqrt(baseS) * 1.1, 13, 19));
+    const px = Math.round(clamp(12 * Math.sqrt(baseS) * 1.1, 13, FT.capture ? 24 : 19)); // bigger in the demo video
     ctx.font = zh ? `${px + 1}px ${FONT_ZH}` : `600 ${px}px ${FONT_EN}`;
     const shown = Array.from(b.text).slice(0, Math.max(1, Math.floor(b.chars))).join('');
     const full = wrap(b.text, px * (zh ? 13 : 16), zh);
@@ -1927,7 +1928,11 @@
     const lh = px * 1.4;
     const h = full.length * lh + px * 0.9;
     const X = sx(b.x), Y = sy(b.y);
-    const bx = clamp(X - w / 2, 8, W - 8 - w), by = Y - h - 12;
+    const k = px / 16;
+    // side: shift the bubble away from the player's head; the tail keeps pointing at the speaker
+    const off = (b.side || 0) * (w / 2 - 18 * k);
+    const bx = clamp(X - w / 2 + off, 8, W - 8 - w), by = Y - h - 12 * k;
+    const tx = clamp(X, bx + 16 * k, bx + w - 16 * k);
     ctx.globalAlpha = b.a;
     ctx.fillStyle = 'rgba(60,40,70,0.12)';
     ctx.beginPath();
@@ -1936,9 +1941,9 @@
     ctx.fillStyle = 'rgba(255,252,247,0.95)';
     ctx.beginPath();
     rrect(bx, by, w, h, px * 0.8);
-    ctx.moveTo(X - 7, by + h - 1);
-    ctx.lineTo(X, by + h + 9);
-    ctx.lineTo(X + 7, by + h - 1);
+    ctx.moveTo(tx - 7 * k, by + h - 1);
+    ctx.lineTo(X, by + h + 9 * k);
+    ctx.lineTo(tx + 7 * k, by + h - 1);
     ctx.fill();
     ctx.fillStyle = '#5c4a55';
     ctx.textAlign = 'left';

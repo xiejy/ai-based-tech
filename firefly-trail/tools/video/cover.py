@@ -20,7 +20,7 @@ a = grab(l, tl, os.path.join(out, '_l.jpg'))
 a.save(os.path.join(out, 'cover-16x9.jpg'), quality=92)
 b = grab(v, tv, os.path.join(out, '_v.jpg'))
 # 3:4 window around the title block + game window (see compose.py layout)
-top = 200
+top = 150
 b.crop((0, top, 1080, top + 1440)).save(os.path.join(out, 'cover-3x4.jpg'), quality=92)
 for f in ('_l.jpg', '_v.jpg'):
     os.remove(os.path.join(out, f))

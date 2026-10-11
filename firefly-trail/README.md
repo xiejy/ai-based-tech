@@ -35,8 +35,8 @@
 | 花田 Flower Meadow | 清晨 | 蒲公英、蝴蝶 |
 | 樱花坡 Blossom Hill | 上午 | 樱花瓣 |
 | 镜湖 Mirror Lake | 午后 | 木桥、睡莲、波光 |
-| 黄昏森林 Twilight Woods | 傍晚 | 落叶、萤火虫、会弹跳的大蘑菇 |
-| 雪原 Snowfield | 暮色 | 下雪、第一颗星星 |
+| 黄昏森林 Twilight Woods | 日落 | 落叶、萤火虫、会弹跳的大蘑菇 |
+| 雪原 Snowfield | 入夜 | 下雪、第一颗星星 |
 | 星海岸 Starlit Shore | 夜 | 月光、海浪、灯塔、流星 |
 
 | | | |

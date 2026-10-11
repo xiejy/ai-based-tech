@@ -16,7 +16,7 @@ const env = [];
 for (let i = 0; i * dt < tl.total; i++) {
   const t = i * dt;
   let c = tl.clips[0];
-  for (const k of tl.clips) if (t >= k.start + (k === tl.clips[0] ? 0 : 0.25)) c = k;
+  for (const k of tl.clips) if (t >= k.start + (k === tl.clips[0] ? 0 : k.xf / 2)) c = k;
   const e = c.meta.env[Math.min(c.meta.env.length - 1, Math.max(0, Math.round((t - c.start) / dt)))];
   env.push({ night: e.night, wind: e.wind, water: e.water });
 }
@@ -39,7 +39,7 @@ for (let i = 0; i * dt < tl.total; i++) {
     A.init(ctx);
     const g = A.master.gain;
     g.setValueAtTime(0.0001, 0);
-    g.linearRampToValueAtTime(0.85, 1.2);
+    g.linearRampToValueAtTime(0.85, 0.25);
     g.setValueAtTime(0.85, total - 2.6);
     g.linearRampToValueAtTime(0.0001, total);
     for (let i = 0; i < env.length; i++) A.update(dt, env[i], i * dt);

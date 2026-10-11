@@ -21,9 +21,10 @@ FPS, XF = edit['fps'], edit['crossfade']
 clips, end = [], 0.0
 for i, s in enumerate(edit['shots']):
     meta = json.load(open(os.path.join(shots_dir, s['id'], 'meta.json')))
-    start = 0.0 if i == 0 else end - XF
+    xf = s.get('xf', XF)  # crossfade into this shot
+    start = 0.0 if i == 0 else end - xf
     end = start + meta['dur']
-    clips.append(dict(s, start=start, dur=meta['dur'], frames=meta['frames'], idx=i))
+    clips.append(dict(s, xf=xf, start=start, dur=meta['dur'], frames=meta['frames'], idx=i))
 TOTAL = end
 NFRAMES = int(round(TOTAL * FPS))
 
@@ -38,13 +39,32 @@ def shot_frame(c, t):
     return _cache[key]
 
 def frame_at(t):
+    """(image, outgoing shot, incoming shot, blend 0..1) — during a crossfade both shots are live."""
     live = [c for c in clips if c['start'] - 1e-6 <= t < c['start'] + c['dur'] - 1e-6] or [clips[-1]]
     if len(live) == 1:
-        return live[0]['frame'] if False else shot_frame(live[0], t), live[0]
+        return shot_frame(live[0], t), live[0], live[0], 0.0
     a, b = live[0], live[1]
-    k = (t - b['start']) / XF
+    k = min(1.0, max(0.0, (t - b['start']) / b['xf']))
     k = k * k * (3 - 2 * k)
-    return Image.blend(shot_frame(a, t), shot_frame(b, t), k), (b if k > 0.5 else a)
+    return Image.blend(shot_frame(a, t), shot_frame(b, t), k), a, b, k
+
+def crop_x(c, t):
+    """Horizontal centre of the 9:16 window crop; 'cropKeys' animate it on the shot's own clock."""
+    keys = c.get('cropKeys')
+    if not keys:
+        x = c.get('cropX', 960)
+    else:
+        lt = t - c['start']
+        x = keys[-1][1]
+        if lt <= keys[0][0]:
+            x = keys[0][1]
+        else:
+            for (t0, x0), (t1, x1) in zip(keys, keys[1:]):
+                if t0 <= lt <= t1:
+                    u = (lt - t0) / (t1 - t0)
+                    x = x0 + (x1 - x0) * u * u * (3 - 2 * u)
+                    break
+    return min(1320, max(600, x))
 
 def ramp(t, t0, t1, fade=0.45):
     """0 → 1 → 0 window with soft edges."""
@@ -71,12 +91,20 @@ def paste(base, im, x, y, alpha):
 def caption_window(c):
     if 'cap' not in c:
         return None
-    t0 = c['start'] + c.get('capFrom', (0.55 if c['idx'] else 0.3) + XF * 0.4)
-    t1 = c['start'] + c.get('capUntil', c['dur'] - XF - 0.35)
+    t0 = c['start'] + c.get('capFrom', (0.55 if c['idx'] else 0.3) + c['xf'] * 0.4)
+    nxt = clips[c['idx'] + 1]['xf'] if c['idx'] + 1 < len(clips) else 0
+    t1 = c['start'] + c.get('capUntil', c['dur'] - nxt - 0.35)
     return t0, t1
 
 def master_fade(t):
-    return min(1.0, t / edit['fadeIn'], (TOTAL - t) / edit['fadeOut'])
+    fi = 1.0 if edit['fadeIn'] <= 0 else t / edit['fadeIn']
+    return min(1.0, fi, (TOTAL - t) / edit['fadeOut'])
+
+def quote_alpha(t):
+    """The opening quote stays up through the hook and fades as the second shot takes over."""
+    if not clips[0].get('quote') or len(clips) < 2:
+        return 0.0
+    return min(1.0, max(0.0, (clips[1]['start'] + clips[1]['xf'] - t) / 0.45))
 
 # ---- vertical layout pieces ----
 VW, VH = 1080, 1920
@@ -91,8 +119,12 @@ rim = Image.new('RGBA', (VW, VH), (0, 0, 0, 0))
 ImageDraw.Draw(rim).rounded_rectangle((WIN_X - 2, WIN_Y - 2, WIN_X + WIN_W + 1, WIN_Y + WIN_H + 1), radius=32, outline=(255, 255, 255, 70), width=2)
 
 def compose_landscape(t):
-    img, cur = frame_at(t)
+    img, a_, b_, k_ = frame_at(t)
     base = img.convert('RGBA')
+    qa = quote_alpha(t)
+    if qa > 0:
+        im = overlay('quote')
+        paste(base, im, (1920 - im.width) / 2, 1080 - im.height + 10, qa)
     for c in clips:
         w = caption_window(c)
         if w:
@@ -112,21 +144,27 @@ def compose_landscape(t):
     return base.convert('RGB')
 
 def compose_vertical(t):
-    img, cur = frame_at(t)
-    cx = cur.get('cropX', 960)
+    img, a_, b_, k_ = frame_at(t)
+    cx = crop_x(a_, t) + (crop_x(b_, t) - crop_x(a_, t)) * k_
     # blurred backdrop from the same frame
     bg = img.crop((960 - 304, 0, 960 + 304, 1080)).resize((54, 96), Image.BILINEAR)
     bg = bg.filter(ImageFilter.GaussianBlur(2.2)).resize((VW, VH), Image.BICUBIC)
     bg = ImageEnhance.Brightness(bg).enhance(0.5).convert('RGBA')
     bg.alpha_composite(Image.new('RGBA', (VW, VH), (30, 20, 60, 50)))
     bg.alpha_composite(shadow)
-    win = img.crop((cx - 720, 0, cx + 720, 1080)).resize((WIN_W, WIN_H), Image.BICUBIC)
+    # 4:3 window, 1.2x closer than the full height, which also leaves the HUD row out
+    win = img.crop((int(round(cx)) - 600, 90, int(round(cx)) + 600, 990)).resize((WIN_W, WIN_H), Image.BICUBIC)
     bg.paste(win, (WIN_X, WIN_Y), mask)
     bg.alpha_composite(rim)
-    # title block (after the in-game title screen)
-    head_a = min(1.0, max(0.0, (t - (clips[1]['start'] + 0.1)) / 0.7)) if len(clips) > 1 else 1.0
+    # header: the commenter's request during the hook, then the game's title
+    qa = quote_alpha(t)
     head = overlay('vhead')
-    paste(bg, head, (VW - head.width) / 2, WIN_Y - head.height - 40, head_a * head_a * (3 - 2 * head_a))
+    paste(bg, head, (VW - head.width) / 2, WIN_Y - head.height + 20, 1 - qa)
+    if qa > 0:
+        q = overlay('vquote')
+        paste(bg, q, (VW - q.width) / 2, WIN_Y - q.height + 20, qa)
+        qs = overlay('vquote-sub')
+        paste(bg, qs, (VW - qs.width) / 2, CAP_Y - 70, qa)
     for c in clips:
         w = caption_window(c)
         if w:
@@ -138,8 +176,13 @@ def compose_vertical(t):
     last = clips[-1]
     if 'endCardFrom' in last and t >= last['start'] + last['endCardFrom']:
         a = min(1.0, (t - last['start'] - last['endCardFrom']) / 0.9)
+        a = a * a * (3 - 2 * a)
+        # dim the game window and set the end card inside it, clear of the apps' bottom overlays
+        dim = Image.new('RGBA', (WIN_W, WIN_H), (14, 10, 34, 0))
+        dim.putalpha(mask.point(lambda v: int(v * 110 / 255 * a)))
+        bg.alpha_composite(dim, (WIN_X, WIN_Y))
         im = overlay('vend')
-        paste(bg, im, (VW - im.width) / 2, CAP_Y - 70, a * a * (3 - 2 * a))
+        paste(bg, im, (VW - im.width) / 2, WIN_Y + (WIN_H - im.height) // 2, a)
     return bg.convert('RGB')
 
 W, H = (1920, 1080) if mode == 'landscape' else (VW, VH)
@@ -155,7 +198,10 @@ if preview:
     sys.exit(0)
 
 cmd = ['ffmpeg', '-y', '-loglevel', 'error', '-f', 'rawvideo', '-pix_fmt', 'rgb24', '-s', f'{W}x{H}', '-r', str(FPS), '-i', '-',
-       '-i', wav, '-c:v', 'libx264', '-preset', 'slow', '-crf', '18', '-pix_fmt', 'yuv420p', '-profile:v', 'high',
+       '-i', wav, '-c:v', 'libx264', '-preset', 'slow', '-crf', '18',
+       '-vf', 'scale=out_color_matrix=bt709:out_range=tv,format=yuv420p',
+       '-colorspace', 'bt709', '-color_primaries', 'bt709', '-color_trc', 'bt709', '-color_range', 'tv',
+       '-profile:v', 'high', '-level:v', '4.1',
        '-g', str(FPS * 2), '-c:a', 'aac', '-b:a', '192k', '-ar', '48000', '-shortest', '-movflags', '+faststart', out]
 proc = subprocess.Popen(cmd, stdin=subprocess.PIPE)
 black = np.zeros((H, W, 3), np.float32)
