@@ -83,7 +83,7 @@
       en: ["When you're tired, sit and watch the water.", 'Ribbit~ the water is shining.'],
     },
     fox: {
-      zh: ['走慢一点也没关系，路会等你。', '嘿嘿，尾巴借你抱一下。'],
+      zh: ['走慢一点也没关系，\n路会等你。', '嘿嘿，尾巴借你抱一下。'],
       en: ["It's okay to walk slowly. The path will wait.", 'Hehe, you can hug my tail.'],
     },
     rabbit: {

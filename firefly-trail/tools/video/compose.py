@@ -6,7 +6,7 @@
 landscape: 1920x1080, the game full frame with lower-third captions.
 vertical:  1080x1920 for phone feeds: blurred backdrop, the game in a rounded window, title above, captions below.
 """
-import json, os, subprocess, sys
+import json, math, os, subprocess, sys
 from PIL import Image, ImageDraw, ImageEnhance, ImageFilter
 import numpy as np
 
@@ -22,7 +22,7 @@ clips, end = [], 0.0
 for i, s in enumerate(edit['shots']):
     meta = json.load(open(os.path.join(shots_dir, s['id'], 'meta.json')))
     xf = s.get('xf', XF)  # crossfade into this shot
-    start = 0.0 if i == 0 else end - xf
+    start = 0.0 if i == 0 else math.floor((end - xf) * FPS + 0.5) / FPS  # always on a whole frame
     end = start + meta['dur']
     clips.append(dict(s, xf=xf, start=start, dur=meta['dur'], frames=meta['frames'], idx=i))
 TOTAL = end
@@ -30,7 +30,7 @@ NFRAMES = int(round(TOTAL * FPS))
 
 _cache = {}
 def shot_frame(c, t):
-    k = min(c['frames'] - 1, max(0, int(round((t - c['start']) * FPS))))
+    k = min(c['frames'] - 1, max(0, int(math.floor((t - c['start']) * FPS + 0.5 + 1e-6))))
     key = (c['id'], k)
     if key not in _cache:
         if len(_cache) > 8:
@@ -157,14 +157,15 @@ def compose_vertical(t):
     bg.paste(win, (WIN_X, WIN_Y), mask)
     bg.alpha_composite(rim)
     # header: the commenter's request during the hook, then the game's title
+    # (one after the other, so the two blocks of text never overlap)
     qa = quote_alpha(t)
     head = overlay('vhead')
-    paste(bg, head, (VW - head.width) / 2, WIN_Y - head.height + 20, 1 - qa)
-    if qa > 0:
+    paste(bg, head, (VW - head.width) / 2, WIN_Y - head.height + 20, max(0.0, 1 - 2 * qa))
+    if qa > 0.5:
         q = overlay('vquote')
-        paste(bg, q, (VW - q.width) / 2, WIN_Y - q.height + 20, qa)
+        paste(bg, q, (VW - q.width) / 2, WIN_Y - q.height + 20, min(1.0, 2 * qa - 1))
         qs = overlay('vquote-sub')
-        paste(bg, qs, (VW - qs.width) / 2, CAP_Y - 70, qa)
+        paste(bg, qs, (VW - qs.width) / 2, CAP_Y - 70, min(1.0, 2 * qa - 1))
     for c in clips:
         w = caption_window(c)
         if w:
@@ -179,10 +180,10 @@ def compose_vertical(t):
         a = a * a * (3 - 2 * a)
         # dim the game window and set the end card inside it, clear of the apps' bottom overlays
         dim = Image.new('RGBA', (WIN_W, WIN_H), (14, 10, 34, 0))
-        dim.putalpha(mask.point(lambda v: int(v * 110 / 255 * a)))
+        dim.putalpha(mask.point(lambda v: int(v * 150 / 255 * a)))
         bg.alpha_composite(dim, (WIN_X, WIN_Y))
         im = overlay('vend')
-        paste(bg, im, (VW - im.width) / 2, WIN_Y + (WIN_H - im.height) // 2, a)
+        paste(bg, im, (VW - im.width) / 2 + 50, WIN_Y + (WIN_H - im.height) // 2, a)  # clear of the lighthouse on the left
     return bg.convert('RGB')
 
 W, H = (1920, 1080) if mode == 'landscape' else (VW, VH)

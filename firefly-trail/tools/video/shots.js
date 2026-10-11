@@ -48,9 +48,13 @@ module.exports = [
   },
   {
     // three glimmers fly into the stone lantern and the flowers bloom (no postcard in the video)
-    id: 'lantern', query: 'play&x=9560&lit=2&motes=3', preroll: 2.2, dur: 4.0, perFrame: WALK, setup: NO_TOAST,
+    id: 'lantern', query: 'play&x=9560&lit=2&motes=3', preroll: 2.2, dur: 4.6, perFrame: WALK, setup: NO_TOAST,
     actions: [[-1.0, 'down', R]],
-    seq: [['p.x >= 9712', 'up', R], [0.45, 'press', E], ['G.pendingCard', 'eval', 'FT.G.pendingCard = null']],
+    seq: [
+      ['p.x >= 9712', 'up', R], [1.1, 'press', E],
+      // skip the postcard, and don't offer to "interact" with a lantern that is already lit
+      ['G.pendingCard', 'eval', 'FT.G.pendingCard = null; FT.G.lanterns.forEach((l) => { if (l.lit) l.busy = true; })'],
+    ],
   },
   {
     // bounce on the giant mushroom, glide under a leaf through the fireflies, meet the fox
@@ -77,7 +81,7 @@ module.exports = [
     // the last walk to the lighthouse; it lights up, lanterns rise, a whale says hello
     // (the in-game ending card is skipped: the video's own end card follows)
     id: 'finale', query: 'play&x=18830&lit=5&motes=3', preroll: 1, dur: 13.4, perFrame: WALK,
-    actions: [[0, 'down', R]],
+    actions: [[0, 'down', R], [0.2, 'eval', TOAST_OUT]],
     seq: [['p.x >= 19050', 'up', R], [0.4, 'press', E], [0.1, 'eval', 'FT.G.ending.card = true'], [5.6, 'eval', "document.getElementById('hud').style.opacity = '0'"]],
   },
 ];

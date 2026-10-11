@@ -26,10 +26,10 @@ echo "4/5 cutting and encoding"
 python3 compose.py "$WORK/shots" "$WORK/overlays" "$WORK/soundtrack.wav" "$WORK/firefly-trail-demo-16x9.mp4" landscape
 python3 compose.py "$WORK/shots" "$WORK/overlays" "$WORK/soundtrack.wav" "$WORK/firefly-trail-demo-9x16.mp4" vertical
 
-echo "5/5 covers (the cat gliding under its leaf by the cherry tree)"
+echo "5/5 covers (16:9: the opening quote over the leaf glide; 3:4: the glide by the cherry tree)"
 read -r T16 T9 <<< "$(node -e "
   const { timeline } = require('./timeline'); const tl = timeline('$WORK/shots');
   const b = tl.clips.find((c) => c.id === 'blossom'); const g = b.meta.events.find((e) => e.name === 'glide');
-  const t = b.start + (g ? g.t : 3.2); console.log((t + 0.3).toFixed(2), (t + 0.45).toFixed(2));")"
+  const t = b.start + (g ? g.t : 3.2); console.log('0.6', (t + 0.45).toFixed(2));")"
 python3 cover.py "$WORK/firefly-trail-demo-16x9.mp4" "$WORK/firefly-trail-demo-9x16.mp4" "$WORK" "$T16" "$T9"
 ls -lh "$WORK"/*.mp4 "$WORK"/cover-*.jpg

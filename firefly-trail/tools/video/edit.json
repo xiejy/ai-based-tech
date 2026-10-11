@@ -4,18 +4,122 @@
   "fadeIn": 0,
   "fadeOut": 1.2,
   "shots": [
-    { "id": "hook", "cropX": 960, "quote": true },
-    { "id": "meadow", "cropX": 960, "xf": 0.2, "cap": ["从家门口出发　一路捡起微光", "Set off from home, gathering glimmers along the way"] },
-    { "id": "blossom", "cropX": 960, "cap": ["爬上樱花树　再撑着叶子飘下来", "Climb the cherry tree, then drift down under a leaf"] },
-    { "id": "lake", "cropX": 960, "cap": ["走过湖上的木桥　和青蛙打个招呼", "Cross the lake and say hi to the frog"] },
-    { "id": "lantern", "cropX": 960, "xf": 0.15, "capUntil": 3.5, "cap": ["点亮石灯笼　花也跟着开了", "Light a lantern, and the flowers bloom"] },
-    { "id": "forest", "cropX": 960, "capUntil": 4.9, "cap": ["踩一下大蘑菇　就能弹上天", "Hop on a mushroom and bounce sky-high"] },
-    { "id": "snow", "cropX": 960, "capFrom": 5.3, "cap": ["走累了　就坐下来看一会儿雪", "Tired? Sit down and watch the snow for a while"] },
-    { "id": "finale", "cropKeys": [[0, 960], [2.0, 960], [3.4, 840], [5.3, 840], [7.6, 1300], [8.2, 1300], [8.9, 840]],
-      "capFrom": 2.3, "capUntil": 7.4, "endCardFrom": 8.2, "cap": ["五盏灯都亮了　灯塔也醒了", "All five lanterns glow, and the lighthouse wakes"] }
+    {
+      "id": "hook",
+      "cropX": 960,
+      "quote": true
+    },
+    {
+      "id": "meadow",
+      "cropX": 960,
+      "xf": 0.2,
+      "cap": [
+        "从家门口出发　一路捡起微光",
+        "Set off from home, gathering glimmers along the way"
+      ]
+    },
+    {
+      "id": "blossom",
+      "cropX": 960,
+      "cap": [
+        "爬上樱花树　再撑着叶子飘下来",
+        "Climb the cherry tree, then drift down under a leaf"
+      ]
+    },
+    {
+      "id": "lake",
+      "cropX": 960,
+      "cap": [
+        "走过湖上的木桥　和青蛙打个招呼",
+        "Cross the lake and say hi to the frog"
+      ],
+      "xf": 0.3
+    },
+    {
+      "id": "lantern",
+      "cropX": 960,
+      "xf": 0.2,
+      "capUntil": 4.0,
+      "cap": [
+        "点亮石灯笼　花也跟着开了",
+        "Light a lantern, and the flowers bloom"
+      ]
+    },
+    {
+      "id": "forest",
+      "cropX": 960,
+      "capUntil": 4.9,
+      "cap": [
+        "踩一下大蘑菇　就能弹上天",
+        "Hop on a mushroom and bounce sky-high"
+      ],
+      "xf": 0.3
+    },
+    {
+      "id": "snow",
+      "cropX": 960,
+      "capFrom": 5.3,
+      "cap": [
+        "走累了　就坐下来看一会儿雪",
+        "Tired? Sit down and watch the snow for a while"
+      ]
+    },
+    {
+      "id": "finale",
+      "cropKeys": [
+        [
+          0,
+          960
+        ],
+        [
+          2.0,
+          960
+        ],
+        [
+          3.4,
+          900
+        ],
+        [
+          4.6,
+          900
+        ],
+        [
+          6.5,
+          1180
+        ],
+        [
+          7.6,
+          1300
+        ],
+        [
+          8.2,
+          1300
+        ],
+        [
+          8.9,
+          900
+        ]
+      ],
+      "capFrom": 2.3,
+      "capUntil": 7.4,
+      "endCardFrom": 8.2,
+      "cap": [
+        "五盏灯都亮了　灯塔也醒了",
+        "All five lanterns glow, and the lighthouse wakes"
+      ]
+    }
   ],
-  "quote": ["@_月云：「可以做那种治愈的2D跑图游戏嘛」", "做好啦 ✔ 萤火小径", "从清晨的花田，慢慢走到夜晚的海边"],
-  "endCard": ["萤火小径", "Firefly Trail", "献给 @_月云，和所有喜欢治愈系画风的你 ♡", "手机、电脑浏览器打开就能玩 · 试玩链接在评论区置顶"],
+  "quote": [
+    "@_月云：「可以做那种治愈的2D跑图游戏嘛」",
+    "做好啦 ✔ 萤火小径",
+    "从清晨的花田，慢慢走到夜晚的海边"
+  ],
+  "endCard": [
+    "萤火小径",
+    "Firefly Trail",
+    "献给 @_月云，和所有喜欢治愈系画风的你 ♡",
+    "手机、电脑浏览器打开就能玩 · 试玩链接在评论区置顶"
+  ],
   "vertical": {
     "title": "萤火小径",
     "subtitle": "Firefly Trail",

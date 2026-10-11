@@ -1917,11 +1917,18 @@
   }
   function drawBubble(b) {
     const zh = G.lang === 'zh';
-    const px = Math.round(clamp(12 * Math.sqrt(baseS) * 1.1, 13, FT.capture ? 24 : 19)); // bigger in the demo video
+    const px = FT.capture ? 24 : Math.round(clamp(12 * Math.sqrt(baseS) * 1.1, 13, 19)); // bigger in the demo video
     ctx.font = zh ? `${px + 1}px ${FONT_ZH}` : `600 ${px}px ${FONT_EN}`;
-    const shown = Array.from(b.text).slice(0, Math.max(1, Math.floor(b.chars))).join('');
     const full = wrap(b.text, px * (zh ? 13 : 16), zh);
-    const lines = wrap(shown, px * (zh ? 13 : 16), zh);
+    // typewriter: reveal the final layout character by character, so words never jump between lines
+    let left = Math.max(1, Math.floor(b.chars));
+    const lines = [];
+    for (const l of full) {
+      if (left <= 0) break;
+      const ch = Array.from(l);
+      lines.push(ch.slice(0, left).join(''));
+      left -= ch.length + (zh ? 0 : 1);
+    }
     let w = 0;
     for (const l of full) w = Math.max(w, ctx.measureText(l).width);
     w += px * 1.5;

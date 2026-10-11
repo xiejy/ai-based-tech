@@ -31,7 +31,8 @@ for (let i = 0; i * dt < tl.total; i++) {
   await page.waitForFunction(() => window.FT && FT.capture);
   const b64 = await page.evaluate(async ({ total, dt, events, env }) => {
     const sr = 48000;
-    const ctx = new OfflineAudioContext(2, Math.ceil(sr * total), sr);
+    const PRE = 3; // render 3 s early and drop them, so the music is already playing on the first frame
+    const ctx = new OfflineAudioContext(2, Math.ceil(sr * (total + PRE)), sr);
     const A = FT.Audio;
     FT.capture.stop();
     A.ctx = null;
@@ -39,14 +40,17 @@ for (let i = 0; i * dt < tl.total; i++) {
     A.init(ctx);
     const g = A.master.gain;
     g.setValueAtTime(0.0001, 0);
-    g.linearRampToValueAtTime(0.85, 0.25);
-    g.setValueAtTime(0.85, total - 2.6);
-    g.linearRampToValueAtTime(0.0001, total);
-    for (let i = 0; i < env.length; i++) A.update(dt, env[i], i * dt);
-    for (const e of events) A.play(e.name, e.arg === null ? undefined : e.arg, e.t);
+    g.setValueAtTime(0.0001, PRE);
+    g.linearRampToValueAtTime(0.85, PRE + 0.04);
+    g.setValueAtTime(0.85, PRE + total - 2.6);
+    g.linearRampToValueAtTime(0.0001, PRE + total);
+    for (let i = 0; i * dt < PRE; i++) A.update(dt, env[0], i * dt);
+    for (let i = 0; i < env.length; i++) A.update(dt, env[i], PRE + i * dt);
+    for (const e of events) A.play(e.name, e.arg === null ? undefined : e.arg, PRE + e.t);
     const buf = await ctx.startRendering();
     // 16-bit stereo WAV
-    const n = buf.length, L = buf.getChannelData(0), R = buf.getChannelData(1);
+    const off = Math.round(PRE * sr);
+    const n = buf.length - off, L = buf.getChannelData(0).subarray(off), R = buf.getChannelData(1).subarray(off);
     const out = new DataView(new ArrayBuffer(44 + n * 4));
     const str = (o, s) => [...s].forEach((ch, i) => out.setUint8(o + i, ch.charCodeAt(0)));
     str(0, 'RIFF'); out.setUint32(4, 36 + n * 4, true); str(8, 'WAVE'); str(12, 'fmt ');
