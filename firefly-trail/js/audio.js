@@ -19,14 +19,16 @@
     muted: false,
     night: 0,
 
-    init() {
-      if (this.ctx) {
+    // pass an OfflineAudioContext to render the soundtrack to a file (used for the demo video)
+    init(offline) {
+      if (this.ctx && !offline) {
         if (this.ctx.state === 'suspended') this.ctx.resume();
         return;
       }
       const AC = window.AudioContext || window.webkitAudioContext;
-      if (!AC) return;
-      const ctx = (this.ctx = new AC());
+      if (!AC && !offline) return;
+      const ctx = (this.ctx = offline || new AC());
+      this.offline = !!offline;
 
       const comp = ctx.createDynamicsCompressor();
       comp.threshold.value = -18;
@@ -115,10 +117,13 @@
     },
 
     // called every frame
-    update(dt, env) {
-      const ctx = this.ctx;
-      if (!ctx || ctx.state !== 'running') return;
-      const now = ctx.currentTime;
+    live() {
+      return this.ctx && (this.offline || this.ctx.state === 'running');
+    },
+
+    update(dt, env, at) {
+      if (!this.live()) return;
+      const now = at === undefined ? this.ctx.currentTime : at;
       this.night = env.night;
 
       this.wind.g.gain.setTargetAtTime(0.018 + 0.03 * env.wind * (0.6 + 0.4 * Math.sin(now * 0.31) * Math.sin(now * 0.17)), now, 0.5);
@@ -223,10 +228,9 @@
       o.stop(t + dur + 0.05);
     },
 
-    play(name, arg) {
-      const ctx = this.ctx;
-      if (!ctx || ctx.state !== 'running') return;
-      const t = ctx.currentTime + 0.005;
+    play(name, arg, at) {
+      if (!this.live()) return;
+      const t = (at === undefined ? this.ctx.currentTime : at) + 0.005;
       switch (name) {
         case 'collect': {
           const n = arg || 0;

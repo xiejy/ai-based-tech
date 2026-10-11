@@ -878,12 +878,43 @@
     }
     updateParts(dt);
     updateWhale(dt);
-    if (A.ctx) {
-      const x = G.state === 'play' ? G.player.x : G.cam.x;
-      const lakeD = x < Wd.LAKE0 ? Wd.LAKE0 - x : x > Wd.LAKE1 ? x - Wd.LAKE1 : 0;
-      const water = Math.max(clamp(1 - lakeD / 600, 0, 1) * 0.6, clamp(1 - (Wd.SHORE - x) / 1000, 0, 1));
-      A.update(dt, { night: Wd.numAt('night', x), wind: Wd.numAt('wind', x), water });
-    }
+    if (A.ctx) A.update(dt, audioEnv());
+  }
+  function audioEnv() {
+    const x = G.state === 'play' ? G.player.x : G.cam.x;
+    const lakeD = x < Wd.LAKE0 ? Wd.LAKE0 - x : x > Wd.LAKE1 ? x - Wd.LAKE1 : 0;
+    const water = Math.max(clamp(1 - lakeD / 600, 0, 1) * 0.6, clamp(1 - (Wd.SHORE - x) / 1000, 0, 1));
+    return { night: Wd.numAt('night', x), wind: Wd.numAt('wind', x), water };
+  }
+
+  // ?capture: no animation loop; a recorder steps the game frame by frame (see tools/video)
+  function setupCapture() {
+    const cap = (FT.capture = { t: 0, rec: false, events: [], env: [] });
+    const play = A.play.bind(A);
+    A.play = (...a) => {
+      if (cap.rec) cap.events.push({ t: +cap.t.toFixed(4), name: a[0], arg: a[1] === undefined ? null : a[1] });
+      play(...a);
+    };
+    cap.advance = (dt, render) => {
+      const n = Math.max(1, Math.ceil(dt / 0.018));
+      for (let i = 0; i < n; i++) step(dt / n);
+      if (cap.rec) {
+        cap.env.push({ t: +cap.t.toFixed(4), ...audioEnv() });
+        cap.t += dt;
+      }
+      if (render !== false) R.render(G);
+    };
+    cap.start = () => {
+      cap.rec = true;
+      cap.t = 0;
+      cap.events.length = cap.env.length = 0;
+      G.zone = -1; // show the place name as the shot begins
+    };
+    cap.stop = () => (cap.rec = false);
+    cap.state = () => {
+      const p = G.player;
+      return { x: p.x, y: p.y, vx: p.vx, vy: p.vy, grounded: p.grounded, plat: p.onPlat ? p.onPlat.type + '@' + p.onPlat.x : null, motes: G.trail.length, got: G.motes.filter((m) => m.got).map((m) => m.id), card: G.cardOpen, lit: G.lanterns.map((l) => l.lit), lh: G.lighthouse.lit, camX: G.cam.x, zoom: G.cam.zoom };
+    };
   }
 
   // if the device struggles, quietly switch to a lighter rendering mode once
@@ -1009,7 +1040,8 @@
       if (params.has('ending')) startEnding();
       updateHud();
     }
-    requestAnimationFrame(frame);
+    if (params.has('capture')) setupCapture();
+    else requestAnimationFrame(frame);
   }
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);

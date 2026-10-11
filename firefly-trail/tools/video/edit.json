@@ -1,0 +1,83 @@
+{
+  "fps": 30,
+  "crossfade": 0.5,
+  "fadeIn": 0.6,
+  "fadeOut": 1.2,
+  "shots": [
+    {
+      "id": "title",
+      "cropX": 960
+    },
+    {
+      "id": "meadow",
+      "cropX": 960,
+      "cap": [
+        "从家门口出发，一路捡起微光",
+        "Set out from home and gather the glimmers"
+      ]
+    },
+    {
+      "id": "blossom",
+      "cropX": 960,
+      "cap": [
+        "爬上樱花树，再撑着叶子飘下来",
+        "Climb the cherry tree, float down on a leaf"
+      ]
+    },
+    {
+      "id": "lake",
+      "cropX": 960,
+      "cap": [
+        "走过湖上的木桥，和青蛙打个招呼",
+        "Cross the lake and say hi to the frog"
+      ]
+    },
+    {
+      "id": "lantern",
+      "cropX": 960,
+      "cap": [
+        "三个微光，点亮一盏石灯笼",
+        "Three glimmers light a stone lantern"
+      ],
+      "capUntil": 4.1
+    },
+    {
+      "id": "forest",
+      "cropX": 960,
+      "cap": [
+        "黄昏的森林里，蘑菇会把你弹上天",
+        "In the sunset woods, mushrooms bounce you to the sky"
+      ]
+    },
+    {
+      "id": "snow",
+      "cropX": 960,
+      "cap": [
+        "走累了，就坐下来看一会儿雪",
+        "Tired? Sit down and watch the snow for a while"
+      ],
+      "capFrom": 5.3
+    },
+    {
+      "id": "finale",
+      "cropX": 1030,
+      "cap": [
+        "五盏灯都亮了，去点亮海边的灯塔",
+        "With all five lanterns lit, light the lighthouse"
+      ],
+      "capUntil": 6.4,
+      "endCardFrom": 13.4
+    }
+  ],
+  "endCard": [
+    "萤火小径",
+    "Firefly Trail",
+    "献给 @_月云，和所有喜欢治愈系画风的你 ♡",
+    "纯代码绘制，没有一张图片素材 · 打开浏览器就能玩"
+  ],
+  "vertical": {
+    "title": "萤火小径",
+    "subtitle": "Firefly Trail",
+    "tag": "评论区点单的治愈系 2D 跑图小游戏 ✔"
+  }
+}
