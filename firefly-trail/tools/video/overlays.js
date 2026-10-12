@@ -71,8 +71,9 @@ const esc = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;');
     await render('vcap-' + s.id, `<div class="vc glow"><div class="a zh">${esc(s.cap[0])}</div><div class="b">${esc(s.cap[1])}</div></div>`);
   }
   const [who, big, line] = edit.quote;
-  await render('quote', `<div class="q"><div class="who zh">${esc(who)}</div><div class="big zh glow">${esc(big)}</div></div>`);
-  await render('vquote', `<div class="q vq"><div class="who zh">${esc(who)}</div><div class="big zh glow">${esc(big)}</div></div>`);
+  const whoHtml = who ? `<div class="who zh">${esc(who)}</div>` : ''; // the quoted comment is optional
+  await render('quote', `<div class="q">${whoHtml}<div class="big zh glow">${esc(big)}</div></div>`);
+  await render('vquote', `<div class="q vq">${whoHtml}<div class="big zh glow">${esc(big)}</div></div>`);
   await render('vquote-sub', `<div class="vc glow"><div class="a zh">${esc(line)}</div></div>`);
   const [t, sub, ded, foot] = edit.endCard;
   await render('end', `<div class="end glow"><div class="t zh">${esc(t)}</div><div class="s">${esc(sub)}</div><div class="line"></div><div class="d zh">${esc(ded)}</div><div class="f zh">${esc(foot)}</div></div>`);
