@@ -159,11 +159,13 @@ def compose_vertical(t):
     # header: the commenter's request during the hook, then the game's title
     # (one after the other, so the two blocks of text never overlap)
     qa = quote_alpha(t)
+    hook_quote = edit['vertical'].get('hookQuote', True)
     head = overlay('vhead')
-    paste(bg, head, (VW - head.width) / 2, WIN_Y - head.height + 20, max(0.0, 1 - 2 * qa))
+    paste(bg, head, (VW - head.width) / 2, WIN_Y - head.height + 20, max(0.0, 1 - 2 * qa) if hook_quote else 1.0)
     if qa > 0.5:
-        q = overlay('vquote')
-        paste(bg, q, (VW - q.width) / 2, WIN_Y - q.height + 20, min(1.0, 2 * qa - 1))
+        if hook_quote:
+            q = overlay('vquote')
+            paste(bg, q, (VW - q.width) / 2, WIN_Y - q.height + 20, min(1.0, 2 * qa - 1))
         qs = overlay('vquote-sub')
         paste(bg, qs, (VW - qs.width) / 2, CAP_Y - 70, min(1.0, 2 * qa - 1))
     for c in clips:
